@@ -1,0 +1,260 @@
+
+
+
+
+/* define some custom general table stuff about how i want tables to be shown */
+
+/* define some general divs, e.g. should navigator have one?
+i'm not a fan of too many divs, unless they can be merged with (mulitclass) ui ones */
+
+
+/* this removes the box arround the field set. only need if using a field set */
+/*fieldset { padding:0; border:0; margin-top:25px; }*/
+
+
+
+table {
+	margin: 1em 0;
+	border-collapse: collapse;
+	width: 100%;
+}
+table td, th {
+	border: 1px solid #eee;
+	padding: .6em 10px;
+	text-align: left;
+}
+
+/* this makes the nice form labels go on top */
+label, input { display:block; }
+/* without this input are still coloured but not big /  padded */
+input.text { margin-bottom:12px; width:95%; padding: .4em; }
+
+
+a {text-decoration: none;}
+a.link_hover {text-decoration: underline;}
+
+
+a.button_text {
+	padding: .4em 1em .4em 20px;
+	text-decoration: none;
+	position: relative;
+}
+a.button_text span.ui-icon {
+	margin: 0 5px 0 0;
+	position: absolute;
+	left: .2em;
+	top: 50%;
+	margin-top: -8px;
+}
+a.button {
+	padding: .4em 1em .4em 1em;
+	text-decoration: none;
+	position: relative;
+}
+
+a.button span.ui-icon {
+	margin: 0 5px 0 0;
+	position: absolute;
+	left: .2em;
+	top: 50%;
+	margin-top: -8px;
+}
+
+/*
+
+div#content_main{
+	float: left;
+	margin: 20px;
+	padding: 40px;
+	width: 800px;
+	*//*
+	 position: relative;
+	
+	
+	margin: 20px 300px 20px 20px;
+	padding: 20px;
+	z-index: 13;
+}
+
+div#content_main.loan_column{
+	width: 100%;
+}
+
+div#sidebar {
+}
+
+div#column_right{
+	right:0;
+	width: 200px;
+	margin: 20px;
+	padding: 40px;
+	border: 0;
+	margin-right:20%;
+	
+position: absolute;
+*//*
+	
+	position: absolute;
+	top: 155px;
+	right: 80px;
+	width: 200px;
+	margin: 0px;
+	padding: 0px;
+	height: 400px;
+	z-index: 1;
+}
+
+*/
+
+
+div#header {
+	height:70px; 
+	width:100%; 
+	margin:0px 0;
+	overflow:hidden;
+	padding:0 10px;
+	filter:alpha(opacity=90);
+	-moz-opacity:0.9;
+	-khtml-opacity: 0.9;
+	opacity: 0.9;
+}
+
+div#navigator {
+	position:absolute;
+	font-size:85%;
+	left:30px;
+	top:75px;
+}
+
+div.sidebar {
+	top:145px;
+	font-size:85%;
+	position:absolute;
+	width:220px;
+	padding:10px;
+}
+
+div#sidebar_left {
+	/*display: none;*/
+	left:10px;
+	z-index:3;
+}
+
+
+div#show-sidebar-left {
+	left:0px;
+	top:145px;
+	padding: 100px 0.8em 0.5em 0.8em;
+	text-decoration: none;
+	position: absolute;
+	display:none;
+}
+
+div#show-sidebar-left span.ui-icon {
+	position: absolute;
+	left: .2em;
+	top: 50%;
+	margin-top: -8px;
+
+}
+
+/*
+div#sidebar_left.sidebar_visible {
+	display: block;
+}
+*/
+/*
+div#sidebar_right {
+	right:10px;
+	z-index:2;
+}
+*/
+
+div#main_block {
+	width:100%;
+	z-index:1;
+	height:80%;
+}
+
+div#main_body{
+	top: 28px;
+	margin:0 30px 0 280px;
+	position:relative;
+	z-index:5;
+}
+
+div#main_body.sidebar_visible{
+	margin:0 30px 0 30px;
+}
+
+
+div#footer {
+	width:100%;
+	height:35px;
+	margin:0;
+}
+
+
+#top_button {
+	text-align:left;
+}
+
+div#item_table {
+	font-size:90%;
+}
+
+div.dialog {
+	font-size:70%;
+}
+
+/*
+
+#header {
+width:100%;
+background:#313b31;
+color:#ffc;
+overflow:hidden;
+
+padding:0 10px;
+font-size:18px;
+margin:8px 0;
+font-weight:normal;
+}
+
+#user-tools { position:absolute; top:0; right:0; padding:1.2em 20px; font-size:11px; text-align:right; }
+#user-tools2 { position:absolute; top:0; right:0; padding:1.2em 20px; font-size:11px; text-align:right; }
+
+body{
+font: 72.5% "Trebuchet MS", sans-serif;
+margin: 0px;
+}
+
+.demoHeaders { margin-top: 2em; }
+
+
+
+ul#icons {margin: 0; padding: 0;}
+ul#icons li {margin: 2px; position: relative; padding: 4px 0; cursor: pointer; float: left;  list-style: none;}
+ul#icons span.ui-icon {float: left; margin: 0 4px;}
+span#icons {margin: 0; padding: 0;}
+span#icons li {margin: 2px; position: relative; padding: 4px 0; cursor: pointer; float: left;  list-style: none;}
+span#icons span.ui-icon {float: left; margin: 0 4px;}
+
+
+
+div#users-contain { margin: 20px 0; }
+div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
+
+
+label, input { display:block; }
+input.text { margin-bottom:12px; width:95%; padding: .4em; }
+fieldset { padding:0; border:0; margin-top:25px; }
+.ui-dialog .ui-state-highlight, .ui-dialog .ui-state-error { padding: .3em;  }
+
+
+
+#main_body {margin: 50px;}
+
+*/
+

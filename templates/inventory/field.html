@@ -1,0 +1,38 @@
+{% extends ajax|yesno:"base_ajax.html,base.html" %}
+	
+	{% block title %}{% ifequal ajax False %}Stockfile Field{% endifequal %}{% endblock %}
+	{% block navigator %}{% ifnotequal ajax True %}<p><a href="/">Home</a> > Edit {{ field.name }}</p>{% endifnotequal %}{% endblock %}
+	
+	{% block content %}
+	{% ifequal ajax False %}
+	<table class='layout' width='40%'>
+		<tr><td>
+	{% endifequal %}
+		
+		<div id="field_form">
+			<form method="POST" action="">
+				<div id="users-contain" class="ui-widget">
+					<table class="ui-widget ui-widget-content">
+						
+						{% for field in form %}
+						{% if field.is_hidden %}
+						{{ field }}
+						{% else %}
+						<tr><td class='title'>{{ field.label_tag }}</td><td>{{ field }}</td></tr>
+						{% endif %}
+						{% endfor %}
+						
+					{% ifnotequal ajax True %}
+						<tr><td colspan='2'><input type="submit" value="Submit" /></td></tr>
+					{% endifnotequal %}
+					
+					</table>
+				</div>
+			</form>
+		</div>
+		
+	{% ifequal ajax False %}
+		</td></tr>
+	</table>
+	{% endifequal %}
+	{% endblock content %}

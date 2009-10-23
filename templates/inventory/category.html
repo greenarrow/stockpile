@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+		
+		{% block title %}Stockpile {{ category.name }}{% endblock %}
+		
+		{% block page_javascript %}
+		{% include "inventory/category.js" %}
+		{% endblock page_javascript %}
+		
+		{% block navigator %}<a href="{% url stockpile.inventory.views.index %}">Home</a> &gt {{ category.name }}{% endblock %}
+		
+		{% block main_content %}
+		
+				<div id="item_table" class="ui-widget">
+		
+					<table id="items">
+						<thead>
+							<tr class="ui-widget-header">
+								<th>Code</th>
+								{% for field in category.get_fields %}
+								<th>{{ field.name }}</th>
+								{% endfor %}
+								<th>Created</th>
+								<th>Updated</th>
+								{% if item_edit %}
+								<th> </th>
+								{% endif %}
+							</tr>
+						</thead>
+			
+						<tbody>
+							{% for item in items %}
+							<tr id="item_{{ item.id }}" class="ui-widget-content">
+								<td><a href="{% url stockpile.inventory.views.item item.id %}">{{ item.get_code }}</a></td>
+								{% for field, value in item.get_field_values %}
+								<td>{{ value.value }}</td>
+								{% endfor %}
+					
+								<td>{{ item.created }}</td>
+								<td>{{ item.updated }}</td>
+					
+								{% if item_edit %}
+								<td>
+					
+									<a href="{% url stockpile.inventory.views.item item.id %}" id="edit_item_{{ item.id }}" title="Edit Item" item_id="{{ item.id }}" class="ui-state-default ui-corner-all button edit_item open-in-dialog"><span class="ui-icon ui-icon-pencil"></span></a>
+									<a href="#" id="delete_item_{{ item.id }}" title="Delete Item" item_id="{{ item.id }}" class="ui-state-default ui-corner-all button open-in-dialog"><span class="ui-icon ui-icon-trash"></span></a>
+								</td>
+								{% endif %}
+					
+							{% endfor %}
+						</tbody>
+						<!--
+						<tfoot>
+							<tr class="ui-widget-header">
+									<th>Code</th>
+									{% for field in category.get_fields %}
+									<th>{{ field.name }}</th>
+									{% endfor %}
+									<th>Created</th>
+									<th>Updated</th>
+									{% if item_edit %}
+									<th> </th>
+									{% endif %}
+							</tr>
+						</tfoot>
+						-->
+				
+					</table>
+				</div>
+				
+				<div id="top_button"><a href="{% url stockpile.inventory.views.item category.id %}" id="new_item" title="New Item" cat_id="{{ category.id }}" class="ui-state-default ui-corner-all button_text open-in-dialog"><span class="ui-icon ui-icon-newwin"></span>New</a></p></div>
+		
+		
+				
+		{% endblock main_content %}
+		
+		{% block hidden_divs %}
+		<div id="item_dialog" class="dialog" title="Edit Item">
+		</div>
+		{% endblock hidden_divs %}
+
+
+
+
+	

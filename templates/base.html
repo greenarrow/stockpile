@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+	<head>
+		<title>{% block title %}Stockpile{% endblock %}</title>
+	
+		{% block stylesheets %}
+		<link type="text/css" href="{{ MEDIA_URL }}css/pepper-grinder/jquery-ui-1.7.2.custom.css" rel="stylesheet" />
+		<link type="text/css" href="{{ MEDIA_URL }}css/demo_page.css" rel="stylesheet" />
+		<link type="text/css" href="{{ MEDIA_URL }}css/demo_table.css" rel="stylesheet" />
+		<link type="text/css" href="{{ MEDIA_URL }}css/main.css" rel="stylesheet" />
+		{% endblock stylesheets %}
+		
+		<style type="text/css">
+		{% block page_styleshet %}
+		{% endblock page_styleshet %}
+		</style>
+		
+		{% block javascripts %}
+		<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery-1.3.2.min.js"></script>
+		<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery-ui-1.7.2.custom.min.js"></script>
+		<script type="text/javascript" language="javascript" src="{{ MEDIA_URL }}js/jquery.dataTables.js"></script>
+		<script type="text/javascript" src="{{ MEDIA_URL }}js/main.js"></script>
+		{% endblock javascripts %}
+		
+		<script type="text/javascript">
+		{% block page_javascript %}
+		{% endblock %}
+		</script>
+	
+	</head>
+	<body>
+		
+		{% block header %}
+		<div id="header" class="ui-corner-left ui-widget-header">
+			<h1>Stockpile</h1>
+			<div id="user-tools"></div>
+		</div>
+		{% endblock header %}
+		
+		<div id="navigator" class="ui-widget"><p>{% block navigator %}{% endblock %}<p></div>
+		
+		<div id="main_block">
+			<div id="main_body">
+				{% block main_content %}
+				<p>no content has been specified</p>
+				{% endblock main_content %}
+			</div>
+		</div>
+		
+		
+		<div id="sidebar_left" class="sidebar ui-widget ui-corner-all ui-widget-content">
+		{% block sidebar_left %}
+		
+			<div id=hide-sidebar-left>
+				<p class="sidebar-header ui-state-default ui-corner-all"><b>Hide</b></p>
+			</div>
+		
+			<div class="sidebar-module">
+				<p class="sidebar-header ui-state-default ui-corner-all"><b>Categories</b></p>
+				<ul class="sidebar-content">
+					{% for category in sidebar.categories %}
+					<li><a href="{% url stockpile.inventory.views.category category.id %}">{{ category.name }}</a></li>
+					{% endfor %}
+				</ul>
+			</div>
+
+			<div class="sidebar-module">
+				<p class="sidebar-header ui-state-default ui-corner-all"><b>Newest Items</b></p>
+				<ul class="sidebar-content">
+					{% for item in sidebar.newest_items %}
+					<li><a href="{% url stockpile.inventory.views.item item.id %}">{{ item.get_code }}</a> ({{ item.category.name }})</li>
+					{% endfor %}
+				</ul>
+
+			</div>
+			
+			<div class="sidebar-module">
+				<p class="sidebar-header ui-state-default ui-corner-all"><b>Other Stuff</b></p>
+				<p class="sidebar-content">todo - just pass one list to all views returns containing all sidebar module objects to render</p>
+			</div>
+		
+		{% endblock sidebar_left %}
+		</div>
+		
+		<div id="show-sidebar-left" class="ui-widget ui-corner-br ui-corner-tr ui-widget-content ui-state-default button">
+		{% block show-sidebar-left %}
+			<span class="ui-icon ui-icon-triangle-1-w"></span>
+		{% endblock show-sidebar-left %}
+		</div>
+		
+		{% block hidden_divs %}
+		
+		{% endblock hidden_divs %}
+	</body>
+</html>
+
+
+

@@ -1,0 +1,57 @@
+{% extends ajax|yesno:"base_ajax.html,base.html" %}
+	
+	{% block page_javascript %}
+	{% if ajax %}
+	<script type="text/javascript">
+	{% endif %}
+	{% include "inventory/category_edit.js" %}
+	{% if ajax %}
+	</script>
+	{% endif %}
+	{% endblock page_javascript %}
+	
+	{% block navigator %}{% ifnotequal ajax True %}<p><a href="/">Home</a> > Edit {{ category.name }}</p>{% endifnotequal %}{% endblock %}
+	
+	
+	{% block content %}
+	{% ifequal ajax False %}
+	<table class='layout' width='40%'>
+		<tr><td>
+	{% endifequal %}
+			
+			<form method="POST" action="">
+				<div id="users-contain" class="ui-widget">
+					<table class="ui-widget ui-widget-content">
+						
+						{% for field in form %}
+						
+						<tr><td class='title'>{{ field.label_tag }}</td><td>{{ field }}</td></tr>
+						
+						
+						{% endfor %}
+						
+						<tr><td colspan="2"><a href="/field:new" id="new_field" class="ui-state-default ui-corner-all button_text"><span class="ui-icon ui-icon-newwin"></span>New Field</a></td></tr>
+					{% ifnotequal ajax True %}
+						<tr><td colspan='2'><input type="submit" value="Submit" /></td></tr>
+					{% endifnotequal %}
+					
+					</table>
+					
+					{% for field in form.hidden_fields %}
+					{{ field }}
+					{% endfor %}
+				</div>
+			</form>
+			
+	{% ifequal ajax False %}
+		</td></tr>
+	</table>
+	
+	<div id="field_dialog" field_id="">
+	</div>
+	
+	<div id='dbg'></div>
+	
+	{% endifequal %}
+	
+	{% endblock content %}

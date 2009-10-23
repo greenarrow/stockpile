@@ -1,0 +1,57 @@
+{% extends ajax|yesno:"base_ajax.html,base.html" %}
+	
+	{% block navigator %}{% if ajax %}{% else %}<a href="/">Home</a> > <a href='/category:{{ item.category.id }}'>{{ item.category.name }}</a> > {{ item.get_code }}{% endif %}{% endblock %}
+	
+	{% block main_content %}
+		{% if ajax %}{% else %}
+		<div class="ui-widget">
+		{% endif %}
+			<table id="categories">
+				<thead>
+					<tr class="ui-widget-header">
+						<td>Category</td>
+						<td>{{ item.category.name }}</td>
+						<td></td>
+					</tr>
+					<tr class="ui-widget-header">
+						<td>Code</td>
+						<td>{{ item.get_code }}</td>
+						<td></td>
+					</tr>
+				</thead>
+				<tbody>
+			
+					<form method="POST" action="{{ reply }}">
+						{% for field in form %}
+						<tr class="ui-widget-content">
+							<td>{{ field.label_tag }}</td><td>{{ field }}</td>
+							{% if field.is_choice %}
+							<td><a href'/addf/'><a href="#" id="delete_item_{{ item.id }}" class="ui-state-default ui-corner-all button"><span class="ui-icon ui-icon-plus"></span></a></a></td>
+							{% else %}
+							<td></td>
+							{% endif %}
+						</tr>
+						{% endfor %}
+					
+						{% if ajax %}{% else %}
+						<tr class="ui-widget-content">
+							<td colspan="3"><input type="submit" value="Submit" /></td>
+						</tr>
+						{% endif %}
+					</form>
+				</tbody>
+			
+			</table>
+			
+		{% if ajax %}{% else %}
+		</div>
+		{% endif %}
+	
+
+	{% block hidden_divs %}
+	<div id="dialog" class="dialog" title="Create new user">
+	</div>
+	{% endblock hidden_divs %}
+
+	
+	{% endblock main_content %}

@@ -1,0 +1,22 @@
+{% extends ajax|yesno:"base_ajax.html,base.html" %}
+		
+		{% block navigator %}{% ifequal ajax False %}<p><a href="/">Home</a> > Edit {{ category.name }}</p>{% endifequal %}{% endblock %}
+		
+		{% block content %}
+		<table>
+			
+			<div class="ui-widget">
+				<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;"> 
+					<h1>Are you sure you want to delete category <i>{{ category.name }}</i>?</h1>
+			
+			
+				</div>
+		
+				<form method="POST" action="/catdelete:{{ category.id }}">
+					<table><tr><td><input type="submit" value="Yes" /></td><td<input type="submit" value="No" /></td></tr></table>
+				</form>
+		
+			</div>
+		</table>
+		
+		{% endblock content %}
