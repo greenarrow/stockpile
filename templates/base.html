@@ -48,47 +48,49 @@
 				<p>no content has been specified</p>
 				{% endblock main_content %}
 			</div>
-		</div>
 		
 		
-		<div id="sidebar_left" class="sidebar ui-widget ui-corner-all ui-widget-content">
-		{% block sidebar_left %}
 		
-			<div id=hide-sidebar-left>
-				<p class="sidebar-header ui-state-default ui-corner-all"><b>Hide</b></p>
-			</div>
+			<div id="sidebar_left" class="ui-widget ui-corner-all ui-widget-content">
+			{% block sidebar_left %}
 		
-			<div class="sidebar-module">
-				<p class="sidebar-header ui-state-default ui-corner-all"><b>Categories</b></p>
-				<ul class="sidebar-content">
-					{% for category in sidebar.categories %}
-					<li><a href="{% url stockpile.inventory.views.category category.id %}">{{ category.name }}</a></li>
-					{% endfor %}
-				</ul>
-			</div>
+				<div id="hide-sidebar-left">
+					<p class="show-hide-sidebar-left sidebar-header ui-state-default ui-corner-all"><b>Hide</b></p>
+				</div>
+		
+				<div class="sidebar-module">
+					<p class="sidebar-header ui-state-default ui-corner-all"><b>Categories</b></p>
+					<ul class="sidebar-content">
+						{% for category in sidebar.categories %}
+						<li><a href="{% url stockpile.inventory.views.category category.id %}">{{ category.name }}</a></li>
+						{% endfor %}
+					</ul>
+				</div>
 
-			<div class="sidebar-module">
-				<p class="sidebar-header ui-state-default ui-corner-all"><b>Newest Items</b></p>
-				<ul class="sidebar-content">
-					{% for item in sidebar.newest_items %}
-					<li><a href="{% url stockpile.inventory.views.item item.id %}">{{ item.get_code }}</a> ({{ item.category.name }})</li>
-					{% endfor %}
-				</ul>
+				<div class="sidebar-module">
+					<p class="sidebar-header ui-state-default ui-corner-all"><b>Newest Items</b></p>
+					<ul class="sidebar-content">
+						{% for item in sidebar.newest_items %}
+						<li><a href="{% url stockpile.inventory.views.item item.id %}">{{ item.get_code }}</a> ({{ item.category.name }})</li>
+						{% endfor %}
+					</ul>
 
-			</div>
+				</div>
 			
-			<div class="sidebar-module">
-				<p class="sidebar-header ui-state-default ui-corner-all"><b>Other Stuff</b></p>
-				<p class="sidebar-content">...</p>
+				<div class="sidebar-module">
+					<p class="sidebar-header ui-state-default ui-corner-all"><b>Other Stuff</b></p>
+					<p class="sidebar-content">...</p>
+				</div>
+		
+			{% endblock sidebar_left %}
 			</div>
 		
-		{% endblock sidebar_left %}
-		</div>
+			<div id="show-sidebar-left" class="show-hide-sidebar-left ui-widget ui-corner-br ui-corner-tr ui-widget-content ui-state-default button">
+			{% block show-sidebar-left %}
+				<span class="ui-icon ui-icon-triangle-1-w"></span>
+			{% endblock show-sidebar-left %}
+			</div>
 		
-		<div id="show-sidebar-left" class="ui-widget ui-corner-br ui-corner-tr ui-widget-content ui-state-default button">
-		{% block show-sidebar-left %}
-			<span class="ui-icon ui-icon-triangle-1-w"></span>
-		{% endblock show-sidebar-left %}
 		</div>
 		
 		{% block hidden_divs %}

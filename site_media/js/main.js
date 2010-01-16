@@ -16,8 +16,16 @@ $(function(){
 	$('#header').css( { 'background':$('#header').css('color'), 'color':$('.ui-widget-content').css('background-color') } );
 	
 	
+	$(".show-hide-sidebar-left").click( function(){
+		//alert('dd');
+		$("div#sidebar_left").toggle(300);
+		$("div#show-sidebar-left").toggle(300);
+		$("div#main_body").toggleClass('sidebar_visible', 300);
+	});
+	
+	/*
 	$("div#show-sidebar-left").click( function(){
-		$("div#sidebar_left").show(300);
+		
 		$("div#main_body").addClass('sidebar_visible', 300);
 		$("div#show-sidebar-left").hide(300);
 		
@@ -37,6 +45,7 @@ $(function(){
 		
 		
 	});
+	*/
 	
 	$("div.sidebar-module > .sidebar-header").click( function(){
 		$(this).parent().find(".sidebar-content").toggle('fold', 500);
