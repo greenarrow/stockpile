@@ -9,7 +9,7 @@ i'm not a fan of too many divs, unless they can be merged with (mulitclass) ui o
 
 
 /* this removes the box arround the field set. only need if using a field set */
-/*fieldset { padding:0; border:0; margin-top:25px; }*/
+fieldset { padding:0; border:0; margin-top:25px; }
 
 
 

@@ -35,11 +35,11 @@ class CustomCheckboxSelectMultiple(forms.widgets.CheckboxSelectMultiple):
 		
 	
 	def render(self, name, value, attrs=None, choices=()):
-		print name, value, self.attrs, choices
+		#print name, value, self.attrs, choices
 		if value is None: value = []
 		has_id = attrs and 'id' in attrs
 		final_attrs = self.build_attrs(attrs, name=name)
-		print final_attrs
+		#print final_attrs
 		output = [u'<table id="%s">' % self.table_id]
 		# Normalize to strings
 		str_values = set([django.utils.encoding.force_unicode(v) for v in value])

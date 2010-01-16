@@ -1,0 +1,6 @@
+STRING		= 1
+CHOICE		= 2
+BOOLEAN		= 3
+
+
+

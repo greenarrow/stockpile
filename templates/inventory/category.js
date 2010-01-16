@@ -23,5 +23,10 @@
 				if (resizeTimer) clearTimeout(resizeTimer);
 				resizeTimer = setTimeout(doSomething, 100);
 			});
+			
+			
 		});
+		
+		
+
 

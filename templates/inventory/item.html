@@ -2,11 +2,26 @@
 	
 	{% block navigator %}{% if ajax %}{% else %}<a href="/">Home</a> > <a href='/category:{{ item.category.id }}'>{{ item.category.name }}</a> > {{ item.get_code }}{% endif %}{% endblock %}
 	
+	{% block page_javascript %}
+	{% if ajax %}
+	
+	<script type="text/javascript">
+	$(function(){
+		// bind 'myForm' and provide a simple callback function 
+		$('#item-form').ajaxForm(function() { 
+			alert("Thank you for your comment!"); 
+		}); 
+	
+	});
+	</script>
+	{% endif %}
+	{% endblock %}
+	
 	{% block main_content %}
-		{% if ajax %}{% else %}
-		<div class="ui-widget">
-		{% endif %}
-			<table id="categories">
+	
+	<form id="item-form" method="POST" action="{% url stockpile.inventory.views.item item.id %}">
+		<fieldset>
+			<table>
 				<thead>
 					<tr class="ui-widget-header">
 						<td>Category</td>
@@ -20,38 +35,37 @@
 					</tr>
 				</thead>
 				<tbody>
-			
-					<form method="POST" action="{{ reply }}">
-						{% for field in form %}
-						<tr class="ui-widget-content">
-							<td>{{ field.label_tag }}</td><td>{{ field }}</td>
-							{% if field.is_choice %}
-							<td><a href'/addf/'><a href="#" id="delete_item_{{ item.id }}" class="ui-state-default ui-corner-all button"><span class="ui-icon ui-icon-plus"></span></a></a></td>
-							{% else %}
-							<td></td>
-							{% endif %}
-						</tr>
-						{% endfor %}
-					
-						{% if ajax %}{% else %}
-						<tr class="ui-widget-content">
-							<td colspan="3"><input type="submit" value="Submit" /></td>
-						</tr>
+					{% for field in form %}
+					<tr class="ui-widget-content">
+						<td>{{ field.label_tag }}</td><td>{{ field }}</td>
+						{% if field.field.is_choice %}
+						<td><a href="{% url stockpile.inventory.views.choice_new field.field.current_field.id %}" id="edit_field_{{ field.id }}" title="Edit Field" item_id="{{ field.id }}" class="ui-state-default ui-corner-all button open-in-dialog"><span class="ui-icon ui-icon-plus"></span></a></a></td>
+						{% else %}
+						<td></td>
 						{% endif %}
-					</form>
+					</tr>
+					{% endfor %}
+					
+					{% if ajax %}{% else %}
+					<tr class="ui-widget-content">
+						<td colspan="3"><input type="submit" value="Submit" /></td>
+					</tr>
+					{% endif %}
 				</tbody>
-			
 			</table>
-			
-		{% if ajax %}{% else %}
-		</div>
-		{% endif %}
-	
+		</fieldset>
 
+	</form>
+	
+	
+	{% endblock main_content %}
+	
 	{% block hidden_divs %}
-	<div id="dialog" class="dialog" title="Create new user">
+	{% if ajax %}{% else %}
+	<div id="field_dialog" class="dialog">
 	</div>
+	{% endif %}
 	{% endblock hidden_divs %}
 
 	
-	{% endblock main_content %}
+	

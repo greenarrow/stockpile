@@ -6,11 +6,34 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext 
 
 from stockpile.inventory.models import Category, Value, Field, Item
+import stockpile.inventory.models as models
 import stockpile.inventory.forms as forms
 
 
+
+class Sidebar:
+	
+	def __init__(self):
+		self.categories = list( Category.objects.all() )
+		
+		self.categories.sort()
+		self.categories.reverse()
+		
+		self.newest_items = Item.objects.filter().order_by('-id')[ :5 ]
+		
+		#	self.items = [ ("Categories", categories), ("Newest Items", newest_items), ("Other Stuff", "todo - just pass one list to all views returns containing all sidebar module objects to render") ]
+	
+
+
+def get_base_params(request):
+	return {	'ajax':("ajax" in request.GET and request.GET["ajax"] == "1"),
+			'sidebar':Sidebar(),
+			
+	}
+	# could just list all sidebar stuff in here as sidebar_* save weird issue
+
+
 def index(request):
-	#catalogue = Catalogue.objects.all()[0]
 	categories = Category.objects.all()
 	
 	newest_items = Item.objects.filter().order_by('-id')[ :5 ]
@@ -22,11 +45,10 @@ def index(request):
 	cats_lens.sort()
 	cats_lens.reverse()
 	
-	sidebar = Sidebar()
+	params = get_base_params(request)
+	params.update( {'categories':cats_lens, 'newest_items':newest_items, 'category_admin':True} )
 	
-	return render_to_response( 'inventory/index.html', {'categories':cats_lens, 'newest_items':newest_items, 'category_admin':True, 'sidebar':sidebar}, context_instance=RequestContext(request) )
-
-#TODO new category with option to duplicate
+	return render_to_response( 'inventory/index.html', params, context_instance=RequestContext(request) )
 
 
 def category(request, category_id):
@@ -34,11 +56,13 @@ def category(request, category_id):
 	items = Item.objects.filter(category=cat)
 	rows = []
 	
-	sidebar = Sidebar()
-	
-	return render_to_response( 'inventory/category.html', {'category':cat, 'items':items, 'item_edit':True, 'sidebar':sidebar}, context_instance=RequestContext(request) )
+	params = get_base_params(request)
+	params.update( {'category':cat, 'items':items, 'item_edit':True} )
+	# TODO table vales should be smart depending on fieldtype (e.g. bool should not just show 1/0) should value have a function to format nicely?
+	return render_to_response( 'inventory/category.html', params, context_instance=RequestContext(request) )
 
 
+#TODO new category with option to duplicate
 def category_edit(request, category_id):
 	if request.method == "POST":
 		if category_id == '0':
@@ -71,16 +95,21 @@ def category_edit(request, category_id):
 		
 		form = forms.CategoryEditForm(instance=cat)
 		form.set_category(cat.id)
-		ajax = ("ajax" in request.GET and request.GET["ajax"] == "1")
+		
+		params = get_base_params(request)
+		params.update( {'category':cat, 'form':form} )
 	
-	return render_to_response( 'inventory/category_edit.html', {'category':cat, 'form':form, 'ajax':ajax}, context_instance=RequestContext(request) )
+	return render_to_response( 'inventory/category_edit.html', params, context_instance=RequestContext(request) )
 
 
 def category_delete(request, category_id):
 	
 	cat = Category.objects.get(id=category_id)
 	
-	return render_to_response( 'inventory/category_delete.html', {'category':cat}, context_instance=RequestContext(request) )
+	params = get_base_params(request)
+	params.update( {'category':cat} )
+	
+	return render_to_response( 'inventory/category_delete.html', params, context_instance=RequestContext(request) )
 
 
 def item(request, item_id, category_id=None):
@@ -95,27 +124,61 @@ def item(request, item_id, category_id=None):
 		#
 		#
 		#
+		print request.POST, item
+		form = forms.ItemForm(request.POST, instance=item)
 		
-		form = forms.ItemForm(instance=item, data=request.POST, empty=True)
-		print form.is_valid()
+		if form.is_valid():
+			form.save()
+			return HttpResponse("ok")
+		else:
+			return HttpResponse(form.errors)
 		
 	else:
-		print "oo", item_id
 		if item_id == '0':
 			cat = Category.objects.get(id=category_id)
 			item = Item(category=cat)
-			form = forms.ItemForm(instance=item, empty=True)
+			form = forms.ItemForm(instance=item)
 		else:
 			item = Item.objects.get(id=item_id)
-			print "## item:", item
+			#print "## item:", item
 			form = forms.ItemForm(instance=item)
 		
 		
-		sidebar = Sidebar()
-		ajax = ("ajax" in request.GET and request.GET["ajax"] == "1")
-		#print form
-		return render_to_response( 'inventory/item.html', {'item':item, 'form':form, 'reply':'/item:%s' % item.id, 'ajax':ajax, 'sidebar':sidebar}, context_instance=RequestContext(request) )
+		params = get_base_params(request)
+		# reply is bad, remove this!
+		params.update( {'item':item, 'form':form, 'reply':'/item:%s' % item.id} )
+		#print [ dir(fields.field) for fields in form ]
+		return render_to_response( 'inventory/item.html', params, context_instance=RequestContext(request) )
 
+
+def item_delete(request, item_id):
+	params = get_base_params(request)
+	params.update( {'item':item, 'form':form} )
+	return render_to_response( 'inventory/item_delete.html', params, context_instance=RequestContext(request) )
+
+
+def choice(request, value):
+	if request.method == "POST":
+		pass
+	else:
+		form = forms.AddChoiceForm(instance=value)
+	
+		params = get_base_params(request)
+		params.update( {'value':value, 'form':form} )
+		return render_to_response( 'inventory/choice.html', params, context_instance=RequestContext(request) )
+		
+
+def choice_new(request, field_id):
+	field = models.Field.objects.get(id=field_id)
+	value = models.Value(field=field)
+	
+	return choice(request, value)
+	
+	
+
+def choice_edit(request, item_id):
+	value = models.Value.objects.get(item_id)
+	return choice(request, value)
 
 
 def field(request, field_id):
@@ -123,7 +186,7 @@ def field(request, field_id):
 	if request.method == "POST":
 		if field_id == '0':
 			field = Field()
-			print "new"
+			#print "new"
 		else:
 			field = Field.objects.get(id=field_id)
 		
@@ -159,43 +222,20 @@ def field(request, field_id):
 		else:
 			field = Field.objects.get(id=field_id)
 		
-		ajax = ("ajax" in request.GET and request.GET["ajax"] == "1")
-		
 		form = forms.FieldForm(instance=field)
 		
 		# If we have a return page set this to hidden form item
 		if "return" in request.GET:
 			form.fields["return_page"].initial = request.GET["return"]
 		
+		params = get_base_params(request)
+		params.update( {'field':field, 'form':form} )
 		
-		
-		return render_to_response( 'inventory/field.html', {'field':field, 'form':form, 'ajax':ajax}, context_instance=RequestContext(request) )
-
-"""
-def sidebar(request):
-	categories = list( Category.objects.all() )
-	
-	categories.sort()
-	categories.reverse()
-	
-	newest_items = Item.objects.filter().order_by('-id')[ :5 ]
-	
-	return render_to_response( 'inventory/ajax_sidebar.html', {'categories':categories, 'newest_items':newest_items}, context_instance=RequestContext(request) )
-"""
+		return render_to_response( 'inventory/field.html', params, context_instance=RequestContext(request) )
 
 
-class Sidebar:
-	
-	def __init__(self):
-		self.categories = list( Category.objects.all() )
-		
-		self.categories.sort()
-		self.categories.reverse()
-		
-		self.newest_items = Item.objects.filter().order_by('-id')[ :5 ]
-		
-		#	self.items = [ ("Categories", categories), ("Newest Items", newest_items), ("Other Stuff", "todo - just pass one list to all views returns containing all sidebar module objects to render") ]
-	
+
+
 
 # I don't know why the hell DJango wants to call an object in this module called sidebar, but we will let it
 def sidebar():

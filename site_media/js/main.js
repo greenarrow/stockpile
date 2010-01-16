@@ -17,7 +17,7 @@ $(function(){
 	
 	
 	$("div#show-sidebar-left").click( function(){
-		
+		$("div#sidebar_left").show(300);
 		$("div#main_body").addClass('sidebar_visible', 300);
 		$("div#show-sidebar-left").hide(300);
 		
@@ -58,7 +58,7 @@ $(function(){
 	// Dialog
 	$("div.dialog").dialog({
 		bgiframe: true,
-		resizable: false,
+		//resizable: false,
 		autoOpen: false,
 		width: 400,
 		modal: true,
@@ -88,10 +88,13 @@ $(function(){
 		$('div.dialog').dialog( 'option', 'title', $(this).attr("title") );
 		url = $(this).attr("href");
 		$("div.dialog").load(url + "?ajax=1");
+		//alert( url + "?ajax=1" );
 		$('div.dialog').dialog('open');
 		
 		return false;
 	});
+	
+	
 
 
 	

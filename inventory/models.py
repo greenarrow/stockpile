@@ -1,21 +1,25 @@
 from django.db import models
 
+import stockpile.inventory.fieldtypes as fieldtypes
+
+"""
 class FieldType(models.Model):
 	name = models.CharField(max_length=10)
 
 	def __unicode__(self):
 		return self.name
+"""
 
 class Field(models.Model):
 	name = models.CharField(max_length=30)
-	field_type = models.ForeignKey(FieldType)
+	field_type = models.IntegerField()
 	
 	class Meta:
 		ordering = ('name',)
 	
 	def is_choice(self):
-		print self.field_type.name == 'choice'
-		return self.field_type.name == 'choice'
+		print "IC", self.field_type == fieldtypes.CHOICE
+		return self.field_type == fieldtypes.CHOICE
 	
 	def __unicode__(self):
 		return self.name
@@ -74,18 +78,21 @@ class Item(models.Model):
 		#print u'rc"%s%d"' % (self.category.code, self.id)
 		return u'%s%s' % ( self.category.code, str(self.id).zfill(4) )
 	
-	def get_field_values(self):
+	def get_field_values(self, null_values=False):
 		fields = self.category.fields.all()
 		result = []
-		print "===ff", fields
+		
 		for field in fields:
-			print "====field", field
-			values = self.values.filter(field=field)
-			print "===vals", values
+			
+			if null_values:
+				values = []
+			else:
+				values = self.values.filter(field=field)
+			
 			if len(values):
 				value = self.values.filter(field=field)[0]
 			else:
-				value = None	
+				value = None
 			result.append( (field, value) )
 		return result
 	

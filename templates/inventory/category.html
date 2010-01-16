@@ -42,7 +42,7 @@
 								<td>
 					
 									<a href="{% url stockpile.inventory.views.item item.id %}" id="edit_item_{{ item.id }}" title="Edit Item" item_id="{{ item.id }}" class="ui-state-default ui-corner-all button edit_item open-in-dialog"><span class="ui-icon ui-icon-pencil"></span></a>
-									<a href="#" id="delete_item_{{ item.id }}" title="Delete Item" item_id="{{ item.id }}" class="ui-state-default ui-corner-all button open-in-dialog"><span class="ui-icon ui-icon-trash"></span></a>
+									<a href="{% url stockpile.inventory.views.item_delete item.id %}" id="delete_item_{{ item.id }}" title="Delete Item" item_id="{{ item.id }}" class="ui-state-default ui-corner-all button open-in-dialog"><span class="ui-icon ui-icon-trash"></span></a>
 								</td>
 								{% endif %}
 					
@@ -74,7 +74,7 @@
 		{% endblock main_content %}
 		
 		{% block hidden_divs %}
-		<div id="item_dialog" class="dialog" title="Edit Item">
+		<div id="item_dialog" class="dialog">
 		</div>
 		{% endblock hidden_divs %}
 
