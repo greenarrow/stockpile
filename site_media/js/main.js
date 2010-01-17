@@ -21,6 +21,7 @@ $(function(){
 		$("div#sidebar_left").toggle(300);
 		$("div#show-sidebar-left").toggle(300);
 		$("div#main_body").toggleClass('sidebar_visible', 300);
+		
 	});
 	
 	/*
