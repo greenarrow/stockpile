@@ -1,6 +1,6 @@
 {% extends ajax|yesno:"base_ajax.html,base.html" %}
 	
-	{% block navigator %}{% if ajax %}{% else %}<a href="{% url stockpile.inventory.views.index %}">Home</a> > <a href='{% url stockpile.inventory.views.category_view item.category.id %}'>{{ item.category.name }}</a> > {{ item.get_code }}{% endif %}{% endblock %}
+	{% block navigator %}{% if ajax %}{% else %}<a href="{% url stockpile.inventory.views.index %}">Home</a> &gt <a href='{% url stockpile.inventory.views.category_view item.category.id %}'>{{ item.category.name }}</a> &gt {{ item.get_code }}{% endif %}{% endblock %}
 	
 	{% block page_javascript %}
 	{% if ajax %}

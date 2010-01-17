@@ -10,7 +10,7 @@
 	{% endif %}
 	{% endblock page_javascript %}
 	
-	{% block navigator %}{% ifnotequal ajax True %}<p><a href="/">Home</a> > Edit {{ category.name }}</p>{% endifnotequal %}{% endblock %}
+	{% block navigator %}{% ifnotequal ajax True %}<p><a href="{% url stockpile.inventory.views.index %}">Home</a> &gt Edit {{ category.name }}</p>{% endifnotequal %}{% endblock %}
 	
 	
 	{% block content %}
