@@ -64,6 +64,8 @@ $(function(){
 	);
 	
 	
+	
+	
 	// Popup dialog
 	$("div.dialog").dialog({
 		bgiframe: true,
@@ -78,13 +80,19 @@ $(function(){
 				//allFields.removeClass('ui-state-error');
 				
 				// submit the form contained in dialog div
-				$("div.dialog form").ajaxSubmit(); 
+				
+				$("div.dialog").dialog('disable');
+				var buttons = $('.ui-dialog-buttonpane').find('button');
+				buttons.attr('disabled', 'disabled');
+				buttons.addClass('ui-state-disabled');
+				
+				$("div.dialog form").ajaxSubmit(function() { 
+					location.reload(true);
+					$(this).dialog('close');
+				}); 
 				
 				// TODO - full page reload is a workarround until ajax work is extended to make only the affected content be reloaded
-				location.reload(true);
 				
-				$(this).dialog('close');
-					
 			},
 			
 			'Cancel': function() {
