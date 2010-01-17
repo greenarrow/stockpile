@@ -22,8 +22,10 @@ def get_base_params(request):
 	categories.sort()
 	categories.reverse()
 	newest_items = models.Item.objects.filter().order_by('-id')[ :5 ]
-	print categories
-	return { 'ajax':ajax, 'sidebar':{'newest_items':newest_items, 'categories':categories} }
+	#print categories
+	sidebar_hidden = request.session.get('sidebar_hidden', False)
+	
+	return { 'ajax':ajax, 'sidebar_hidden':sidebar_hidden, 'sidebar':{'newest_items':newest_items, 'categories':categories} }
 
 
 
@@ -232,6 +234,12 @@ def field(request, field_id):
 		
 		return render_to_response( 'inventory/field.html', params, context_instance=RequestContext(request) )
 
+
+
+def toggle_sidebar(request):
+	request.session['sidebar_hidden'] = not request.session.get('sidebar_hidden', False)
+	#print request.session.get('sidebar_hidden', False)
+	return HttpResponse("ok")
 
 @login_required
 def user_logout(request):

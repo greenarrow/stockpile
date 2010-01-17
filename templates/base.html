@@ -26,6 +26,14 @@
 		{% endblock javascripts %}
 		
 		<script type="text/javascript">
+			$(function(){
+				$(".show-hide-sidebar-left").click( function(){
+					$.get("{% url stockpile.inventory.views.toggle_sidebar %}");
+				});
+			});
+		</script>
+		
+		<script type="text/javascript">
 		{% block page_javascript %}
 		{% endblock %}
 		</script>
@@ -45,17 +53,17 @@
 		<div id="user-tools" class="ui-widget"><p>{% if user.is_authenticated %}<b>{{ user.username }}</b>. <a href="{% url stockpile.inventory.views.user_logout %}">logout</a>{% endif %}</p></div>
 		
 		<div id="main_block">
-			<div id="main_body">
+			<div id="main_body"{% if not sidebar_hidden %} class="sidebar_visible"{% endif %}>
 				{% block main_content %}
 				<p>no content has been specified</p>
 				{% endblock main_content %}
 			</div>
 		
 		
-		
-			<div id="sidebar_left" class="ui-widget ui-corner-all ui-widget-content">
+			
+			<div id="sidebar_left" class="ui-widget ui-corner-all ui-widget-content"{% if not sidebar_hidden %} style="display:none"{% endif %}>
 			{% block sidebar_left %}
-		
+				
 				<div id="hide-sidebar-left">
 					<p class="show-hide-sidebar-left sidebar-header ui-state-default ui-corner-all"><b>Hide</b></p>
 				</div>
@@ -85,11 +93,12 @@
 					<p class="sidebar-content">...</p>
 				</div>
 				{% endcomment %}
-		
+				
 			{% endblock sidebar_left %}
 			</div>
+			
 		
-			<div id="show-sidebar-left" class="show-hide-sidebar-left ui-widget ui-corner-br ui-corner-tr ui-widget-content ui-state-default button">
+			<div id="show-sidebar-left" class="show-hide-sidebar-left ui-widget ui-corner-br ui-corner-tr ui-widget-content ui-state-default button"{% if sidebar_hidden %} style="display:none"{% endif %}>
 			{% block show-sidebar-left %}
 				<span class="ui-icon ui-icon-triangle-1-e"></span>
 			{% endblock show-sidebar-left %}

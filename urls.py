@@ -26,6 +26,8 @@ stockpile_patterns = patterns('stockpile.inventory.views',
 	
 	(r'^logout/$', 'user_logout'),
 	
+	(r'^togglesidebar$', 'toggle_sidebar'),
+	
 	# Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
 	# to INSTALLED_APPS to enable admin documentation:
 	( r'^admin/doc/', include('django.contrib.admindocs.urls') ),
