@@ -21,7 +21,7 @@
 								{% endfor %}
 								<th>Created</th>
 								<th>Updated</th>
-								{% if item_edit %}
+								{% if perms.inventory.change_item or perms.inventory.delete_item %}
 								<th> </th>
 								{% endif %}
 							</tr>
