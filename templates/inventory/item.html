@@ -8,9 +8,7 @@
 	<script type="text/javascript">
 	$(function(){
 		// bind 'myForm' and provide a simple callback function 
-		$('#item-form').ajaxForm(function() { 
-			alert("Thank you for your comment!"); 
-		}); 
+		$('#item-form').ajaxForm();
 	
 	});
 	</script>
@@ -19,7 +17,7 @@
 	
 	{% block main_content %}
 	
-	<form id="item-form" method="POST" action="">
+	<form id="item-form" method="POST" action="{% if new_item %}{% url stockpile.inventory.views.item_new category.id %}{% else %}{% url stockpile.inventory.views.item_edit item.id %}{% endif %}">
 		<fieldset>
 			<table>
 				<thead>

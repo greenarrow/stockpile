@@ -122,13 +122,16 @@ def category_delete(request, category_id):
 def item_new(request, category_id):
 	return item_edit(request, item_id='new', category_id=category_id)
 
+
 @login_required
 @user_passes_test( lambda u: u.has_perm('inventory.change_item') )
 def item_edit(request, item_id, category_id=None):
-	print request.user.get_all_permissions()
-	print request.user.has_perm('inventory.change_item')
+	#print request.user.get_all_permissions()
+	#print request.user.has_perm('inventory.change_item')
+	new_item = (item_id == 'new')
+	
 	if request.method == "POST":
-		if item_id == 'new':
+		if new_item:
 			cat = models.Category.objects.get(id=category_id)
 			item = models.Item(category=cat)
 		else:
@@ -146,7 +149,7 @@ def item_edit(request, item_id, category_id=None):
 			return HttpResponse(form.errors)
 		
 	else:
-		if item_id == 'new':
+		if new_item:
 			cat = models.Category.objects.get(id=category_id)
 			item = models.Item(category=cat)
 			form = forms.ItemForm(instance=item)
@@ -156,7 +159,7 @@ def item_edit(request, item_id, category_id=None):
 			form = forms.ItemForm(instance=item)
 		
 		params = get_base_params(request)
-		params.update( {'item':item, 'category':cat, 'form':form} )
+		params.update( {'item':item, 'category':cat, 'form':form, 'new_item':new_item} )
 		return render_to_response( 'inventory/item.html', params, context_instance=RequestContext(request) )
 
 
