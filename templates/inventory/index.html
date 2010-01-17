@@ -31,10 +31,13 @@
 								<td><h4>{{ len }}</h4></td>
 								{% if category_admin %}
 								<td>
-						
+								{% if perms.inventory.change_category %}
 								<a href="{% url stockpile.inventory.views.category_edit cat.id %}" id="configure_link" title="Configure Category" cat_id="{{ cat.id}}" class="ui-state-default ui-corner-all button category_config open-in-dialog"><span class="ui-icon ui-icon-wrench"></span></a>
+								{% endif %}
+								{% if perms.inventory.delete_category %}
 								<a href="{% url stockpile.inventory.views.category_delete cat.id %}" id="delete_link" title="Delete Category" class="ui-state-default ui-corner-all button open-in-dialog"><span class="ui-icon ui-icon-trash"></span></a>
 								</td>
+								{% endif %}
 								{% endif %}
 							</tr>
 							{% endfor %}
@@ -50,10 +53,10 @@
 					<br /><br />
 					{% endif %}
 				</div>
-				
+				{% if perms.inventory.add_category %}
 				
 				<a href="{% url stockpile.inventory.views.category_edit 0 %}" id="new_category" title="New Category" class="ui-state-default ui-corner-all button_text open-in-dialog"><span class="ui-icon ui-icon-newwin"></span>New Category</a>
-	
+				{% endif %}
 	
 		{% endblock main_content %}
 		

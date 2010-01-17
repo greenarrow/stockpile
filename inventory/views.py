@@ -4,10 +4,15 @@ from django.http import HttpResponse, HttpResponseRedirect
 
 # need to find out about this
 from django.template import RequestContext 
+from django.contrib.auth import logout
+from django.core.urlresolvers import reverse
+
 
 from stockpile.inventory.models import Category, Value, Field, Item
 import stockpile.inventory.models as models
 import stockpile.inventory.forms as forms
+
+from django.contrib.auth.decorators import permission_required, login_required
 
 
 
@@ -28,12 +33,13 @@ class Sidebar:
 def get_base_params(request):
 	return {	'ajax':("ajax" in request.GET and request.GET["ajax"] == "1"),
 			'sidebar':Sidebar(),
-			
+
 	}
 	# could just list all sidebar stuff in here as sidebar_* save weird issue
 
-
+@login_required
 def index(request):
+	print request.user.get_all_permissions()
 	categories = Category.objects.all()
 	
 	newest_items = Item.objects.filter().order_by('-id')[ :5 ]
@@ -50,7 +56,7 @@ def index(request):
 	
 	return render_to_response( 'inventory/index.html', params, context_instance=RequestContext(request) )
 
-
+@login_required
 def category(request, category_id):
 	cat = Category.objects.get(id=category_id)
 	items = Item.objects.filter(category=cat)
@@ -63,6 +69,7 @@ def category(request, category_id):
 
 
 #TODO new category with option to duplicate
+@login_required
 def category_edit(request, category_id):
 	if request.method == "POST":
 		if category_id == '0':
@@ -101,7 +108,7 @@ def category_edit(request, category_id):
 	
 	return render_to_response( 'inventory/category_edit.html', params, context_instance=RequestContext(request) )
 
-
+@login_required
 def category_delete(request, category_id):
 	
 	cat = Category.objects.get(id=category_id)
@@ -111,7 +118,7 @@ def category_delete(request, category_id):
 	
 	return render_to_response( 'inventory/category_delete.html', params, context_instance=RequestContext(request) )
 
-
+@login_required
 def item(request, item_id, category_id=None):
 	
 	if request.method == "POST":
@@ -150,7 +157,7 @@ def item(request, item_id, category_id=None):
 		#print [ dir(fields.field) for fields in form ]
 		return render_to_response( 'inventory/item.html', params, context_instance=RequestContext(request) )
 
-
+@login_required
 def item_delete(request, item_id):
 	params = get_base_params(request)
 	params.update( {'item':item, 'form':form} )
@@ -167,7 +174,7 @@ def choice(request, value):
 		params.update( {'value':value, 'form':form} )
 		return render_to_response( 'inventory/choice.html', params, context_instance=RequestContext(request) )
 		
-
+@login_required
 def choice_new(request, field_id):
 	field = models.Field.objects.get(id=field_id)
 	value = models.Value(field=field)
@@ -175,12 +182,12 @@ def choice_new(request, field_id):
 	return choice(request, value)
 	
 	
-
+@login_required
 def choice_edit(request, item_id):
 	value = models.Value.objects.get(item_id)
 	return choice(request, value)
 
-
+@login_required
 def field(request, field_id):
 	
 	if request.method == "POST":
@@ -242,5 +249,8 @@ def sidebar():
 	return None
 
 
-
-
+@login_required
+def user_logout(request):
+	logout(request)
+	return HttpResponseRedirect( reverse( 'stockpile.inventory.views.index') )
+	

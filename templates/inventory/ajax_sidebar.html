@@ -1,0 +1,45 @@
+<script type="text/javascript">
+	$("div#sidebar-left-show-icon").click( function(){
+		$("div#sidebar_left").toggle(1000)
+		$("div#main_body").toggleClass('sidebar_visible', 1000)
+		$("div#sidebar-left-show-icon > span").toggleClass('ui-icon ui-icon-triangle-1-w', 500)
+		$("div#sidebar-left-show-icon > span").toggleClass('ui-icon ui-icon-triangle-1-e', 500)
+	});
+	
+	$("div.sidebar-module > .sidebar-header").click( function(){
+		$(this).parent().find(".sidebar-content").toggle('fold', 1000);
+	});
+	
+	$('.sidebar-header').hover(
+		function() { $(this).addClass('ui-state-hover'); }, 
+		function() { $(this).removeClass('ui-state-hover'); }
+		
+	);
+</script>
+
+<!--<p id="toggle_visible" class="sidebar-header ui-state-default ui-corner-all"><b>Show/Hide</b></p>-->
+
+<div class="sidebar-module">
+	<p class="sidebar-header ui-state-default ui-corner-all"><b>Categories</b></p>
+	<ul class="sidebar-content">
+		{% for category in categories %}
+		<li><a href="{% url stockpile.inventory.views.category_edit category.id %}"	>{{ category.name }}</a></li>
+		{% endfor %}
+	</ul>
+</div>
+
+<div class="sidebar-module">
+<p class="sidebar-header ui-state-default ui-corner-all"><b>Newest Items</b></p>
+<ul class="sidebar-content">
+	{% for item in newest_items %}
+	<li><a href="{% url stockpile.inventory.views.item item.id %}">{{ item.get_code }}</a> ({{ item.category.name }})</li>
+	{% endfor %}
+</ul>
+
+</div>
+
+<div class="sidebar-module">
+<p class="sidebar-header ui-state-default ui-corner-all"><b>Other Stuff</b></p>
+<p class="sidebar-content">todo - just pass one list to all views returns containing all sidebar module objects to render</p>
+</div>
+

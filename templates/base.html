@@ -37,10 +37,12 @@
 		<div id="header" class="ui-corner-left ui-widget-header">
 			<h1>Stockpile</h1>
 			<div id="user-tools"></div>
+			
 		</div>
 		{% endblock header %}
 		
 		<div id="navigator" class="ui-widget"><p>{% block navigator %}{% endblock %}<p></div>
+		<div id="user-tools" class="ui-widget"><p>{% if user.is_authenticated %}<b>{{ user.username }}</b>. <a href="{% url stockpile.inventory.views.user_logout %}">logout</a>{% endif %}</p></div>
 		
 		<div id="main_block">
 			<div id="main_body">
@@ -76,18 +78,20 @@
 					</ul>
 
 				</div>
-			
+				
+				{% comment %}
 				<div class="sidebar-module">
 					<p class="sidebar-header ui-state-default ui-corner-all"><b>Other Stuff</b></p>
 					<p class="sidebar-content">...</p>
 				</div>
+				{% endcomment %}
 		
 			{% endblock sidebar_left %}
 			</div>
 		
 			<div id="show-sidebar-left" class="show-hide-sidebar-left ui-widget ui-corner-br ui-corner-tr ui-widget-content ui-state-default button">
 			{% block show-sidebar-left %}
-				<span class="ui-icon ui-icon-triangle-1-w"></span>
+				<span class="ui-icon ui-icon-triangle-1-e"></span>
 			{% endblock show-sidebar-left %}
 			</div>
 		

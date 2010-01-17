@@ -80,3 +80,7 @@ INSTALLED_APPS = (
 	'django.contrib.admin',
 	'stockpile.inventory',
 )
+
+
+LOGIN_URL = "/login"
+LOGIN_REDIRECT_URL = "/"

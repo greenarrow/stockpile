@@ -7,6 +7,8 @@ import stockpile.settings
 from django.contrib import admin
 admin.autodiscover()
 
+generic_patterns = patterns( '', (r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}), )
+
 stockpile_patterns = patterns('stockpile.inventory.views',
 	(r'^category:(\d+)', 'category'),
 	
@@ -31,6 +33,8 @@ stockpile_patterns = patterns('stockpile.inventory.views',
 	(r'^choice:new:(\d+)$', 'choice_new'),
 	(r'^choice:(\d+)$', 'choice_edit'),
 	
+	(r'^logout/$', 'user_logout'),
+	
 	# Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
 	# to INSTALLED_APPS to enable admin documentation:
 	( r'^admin/doc/', include('django.contrib.admindocs.urls') ),
@@ -48,11 +52,11 @@ else:
 	site_url_base = r'/stockpile/'
 
 urlpatterns = patterns('',
-	( site_url_base, include(stockpile_patterns) ),
+	( site_url_base, include(stockpile_patterns + generic_patterns) ),
 )
 
 #print stockpile.settings.DEBUG
 #if True:#stockpile.settings.DEBUG:
-urlpatterns = stockpile_patterns
+urlpatterns = stockpile_patterns + generic_patterns
 
 

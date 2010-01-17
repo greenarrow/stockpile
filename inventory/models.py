@@ -63,6 +63,10 @@ class Category(models.Model):
 	
 	def __cmp__(self, other):
 		return cmp( self.num_items(), other.num_items() )
+	class Meta:
+		permissions = (
+			("can_modify", "Can modify"),
+		)
 
 
 
