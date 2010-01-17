@@ -1,48 +1,37 @@
-import django.http
-from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render_to_response
+from django.contrib.auth.decorators import permission_required, login_required
 
 # need to find out about this
 from django.template import RequestContext 
 from django.contrib.auth import logout
 from django.core.urlresolvers import reverse
 
-
-from stockpile.inventory.models import Category, Value, Field, Item
 import stockpile.inventory.models as models
 import stockpile.inventory.forms as forms
 
-from django.contrib.auth.decorators import permission_required, login_required
 
-
-
-class Sidebar:
-	
-	def __init__(self):
-		self.categories = list( Category.objects.all() )
-		
-		self.categories.sort()
-		self.categories.reverse()
-		
-		self.newest_items = Item.objects.filter().order_by('-id')[ :5 ]
-		
-		#	self.items = [ ("Categories", categories), ("Newest Items", newest_items), ("Other Stuff", "todo - just pass one list to all views returns containing all sidebar module objects to render") ]
-	
-
-
+@login_required
+# Get parameters used for all views (data used in base.html e.g. sidebar)
 def get_base_params(request):
-	return {	'ajax':("ajax" in request.GET and request.GET["ajax"] == "1"),
-			'sidebar':Sidebar(),
+	# see if we have an request for basic html content (for ajax) or the full page
+	ajax = ("ajax" in request.GET and request.GET["ajax"] == "1")
+	
+	# fetch data for sidebar
+	categories = list( models.Category.objects.all() )
+	categories.sort()
+	categories.reverse()
+	newest_items = models.Item.objects.filter().order_by('-id')[ :5 ]
+	
+	return { 'ajax':ajax, 'sidebar':{'newest_items':newest_items, 'categories':categories} }
 
-	}
-	# could just list all sidebar stuff in here as sidebar_* save weird issue
 
 @login_required
 def index(request):
 	print request.user.get_all_permissions()
-	categories = Category.objects.all()
+	categories = models.Category.objects.all()
 	
-	newest_items = Item.objects.filter().order_by('-id')[ :5 ]
+	newest_items = models.Item.objects.filter().order_by('-id')[ :5 ]
 	
 	cats_lens = []
 	for cat in categories:
@@ -58,8 +47,8 @@ def index(request):
 
 @login_required
 def category(request, category_id):
-	cat = Category.objects.get(id=category_id)
-	items = Item.objects.filter(category=cat)
+	cat = models.Category.objects.get(id=category_id)
+	items = models.Item.objects.filter(category=cat)
 	rows = []
 	
 	params = get_base_params(request)
@@ -73,9 +62,9 @@ def category(request, category_id):
 def category_edit(request, category_id):
 	if request.method == "POST":
 		if category_id == '0':
-			cat = Category()
+			cat = models.Category()
 		else:
-			cat = Category.objects.get(id=category_id)
+			cat = models.Category.objects.get(id=category_id)
 		
 		
 		"""
@@ -95,12 +84,12 @@ def category_edit(request, category_id):
 	else:
 		
 		if category_id == '0':
-			cat = Category()
+			cat = models.Category()
 		else:
-			cat = Category.objects.get(id=category_id)
+			cat = models.Category.objects.get(id=category_id)
 		
 		
-		form = forms.CategoryEditForm(instance=cat)
+		form = forms.models.CategoryEditForm(instance=cat)
 		form.set_category(cat.id)
 		
 		params = get_base_params(request)
@@ -108,15 +97,17 @@ def category_edit(request, category_id):
 	
 	return render_to_response( 'inventory/category_edit.html', params, context_instance=RequestContext(request) )
 
+
 @login_required
 def category_delete(request, category_id):
 	
-	cat = Category.objects.get(id=category_id)
+	cat = models.Category.objects.get(id=category_id)
 	
 	params = get_base_params(request)
 	params.update( {'category':cat} )
 	
 	return render_to_response( 'inventory/category_delete.html', params, context_instance=RequestContext(request) )
+
 
 @login_required
 def item(request, item_id, category_id=None):
@@ -124,10 +115,10 @@ def item(request, item_id, category_id=None):
 	if request.method == "POST":
 		if item_id == '0':
 			
-			cat = Category.objects.get(id=category_id)
-			item = Item(category=cat)
+			cat = models.Category.objects.get(id=category_id)
+			item = models.Item(category=cat)
 		else:
-			item = Item.objects.get(id=item_id)
+			item = models.Item.objects.get(id=item_id)
 		#
 		#
 		#
@@ -142,20 +133,21 @@ def item(request, item_id, category_id=None):
 		
 	else:
 		if item_id == '0':
-			cat = Category.objects.get(id=category_id)
-			item = Item(category=cat)
+			cat = models.Category.objects.get(id=category_id)
+			item = models.Item(category=cat)
 			form = forms.ItemForm(instance=item)
 		else:
-			item = Item.objects.get(id=item_id)
+			item = models.Item.objects.get(id=item_id)
 			#print "## item:", item
 			form = forms.ItemForm(instance=item)
 		
 		
 		params = get_base_params(request)
-		# reply is bad, remove this!
+		# TODO reply is bad, remove this!
 		params.update( {'item':item, 'form':form, 'reply':'/item:%s' % item.id} )
 		#print [ dir(fields.field) for fields in form ]
 		return render_to_response( 'inventory/item.html', params, context_instance=RequestContext(request) )
+
 
 @login_required
 def item_delete(request, item_id):
@@ -164,6 +156,7 @@ def item_delete(request, item_id):
 	return render_to_response( 'inventory/item_delete.html', params, context_instance=RequestContext(request) )
 
 
+@login_required
 def choice(request, value):
 	if request.method == "POST":
 		pass
@@ -173,45 +166,33 @@ def choice(request, value):
 		params = get_base_params(request)
 		params.update( {'value':value, 'form':form} )
 		return render_to_response( 'inventory/choice.html', params, context_instance=RequestContext(request) )
-		
+
+
 @login_required
 def choice_new(request, field_id):
 	field = models.Field.objects.get(id=field_id)
 	value = models.Value(field=field)
 	
 	return choice(request, value)
-	
-	
+
+
 @login_required
 def choice_edit(request, item_id):
 	value = models.Value.objects.get(item_id)
 	return choice(request, value)
+
 
 @login_required
 def field(request, field_id):
 	
 	if request.method == "POST":
 		if field_id == '0':
-			field = Field()
-			#print "new"
+			field = models.Field()
 		else:
-			field = Field.objects.get(id=field_id)
+			field = models.Field.objects.get(id=field_id)
 		
-		"""
-		print field_id, field
-		print request.POST
-		
-		if "return_page" in processed_post:
-			return_page = processed_post["return_page"]
-			del processed_post["return_page"]
-		
-		print processed_post
-		"""
 		form = forms.FieldForm(request.POST, instance=field)
-		#print , form.errors
-		#print form.cleaned_data
-		#for field in form:
-		#	print field
+
 		if form.is_valid():
 			form.save()
 			
@@ -219,15 +200,13 @@ def field(request, field_id):
 		
 		else:
 			return HttpResponse("ERRORS:" + form.errors)
-		# what do ajax?
-		#return HttpResponseRedirect("/")
 		
 	else:
 		
 		if field_id == '0':
-			field = Field()
+			field = models.Field()
 		else:
-			field = Field.objects.get(id=field_id)
+			field = models.Field.objects.get(id=field_id)
 		
 		form = forms.FieldForm(instance=field)
 		
@@ -244,7 +223,7 @@ def field(request, field_id):
 
 
 
-# I don't know why the hell DJango wants to call an object in this module called sidebar, but we will let it
+# TODO resolve this - I don't know why the hell DJango wants to call an object in this module called sidebar, but we will let it
 def sidebar():
 	return None
 

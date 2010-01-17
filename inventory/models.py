@@ -1,5 +1,4 @@
 from django.db import models
-
 import stockpile.inventory.fieldtypes as fieldtypes
 
 """
@@ -11,6 +10,7 @@ class FieldType(models.Model):
 """
 
 class Field(models.Model):
+	""""""
 	name = models.CharField(max_length=30)
 	field_type = models.IntegerField()
 	
@@ -78,8 +78,6 @@ class Item(models.Model):
 	history = models.TextField(blank=True)
 	
 	def get_code(self):
-		#print "ik"
-		#print u'rc"%s%d"' % (self.category.code, self.id)
 		return u'%s%s' % ( self.category.code, str(self.id).zfill(4) )
 	
 	def get_field_values(self, null_values=False):
