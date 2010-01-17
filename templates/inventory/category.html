@@ -21,7 +21,7 @@
 								{% endfor %}
 								<th>Created</th>
 								<th>Updated</th>
-								{% if item_edit %}
+								{% if perms.inventory.change_item or perms.inventory.delete_item %}
 								<th> </th>
 								{% endif %}
 							</tr>
@@ -30,19 +30,22 @@
 						<tbody>
 							{% for item in items %}
 							<tr id="item_{{ item.id }}" class="ui-widget-content">
-								<td><a href="{% url stockpile.inventory.views.item item.id %}">{{ item.get_code }}</a></td>
+								<td><a href="{% url stockpile.inventory.views.item_edit item.id %}">{{ item.get_code }}</a></td>
 								{% for field, value in item.get_field_values %}
 								<td>{{ value.value }}</td>
 								{% endfor %}
 					
 								<td>{{ item.created }}</td>
 								<td>{{ item.updated }}</td>
-					
-								{% if item_edit %}
+								
+								{% if perms.inventory.change_item or perms.inventory.delete_item %}
 								<td>
-					
-									<a href="{% url stockpile.inventory.views.item item.id %}" id="edit_item_{{ item.id }}" title="Edit Item" item_id="{{ item.id }}" class="ui-state-default ui-corner-all button edit_item open-in-dialog"><span class="ui-icon ui-icon-pencil"></span></a>
-									<a href="#" id="delete_item_{{ item.id }}" title="Delete Item" item_id="{{ item.id }}" class="ui-state-default ui-corner-all button open-in-dialog"><span class="ui-icon ui-icon-trash"></span></a>
+									{% if perms.inventory.change_item %}
+									<a href="{% url stockpile.inventory.views.item_edit item.id %}" id="edit_item_{{ item.id }}" title="Edit Item" item_id="{{ item.id }}" class="ui-state-default ui-corner-all button edit_item open-in-dialog"><span class="ui-icon ui-icon-pencil"></span></a>
+									{% endif %}
+									{% if perms.inventory.delete_item %}
+									<a href="{% url stockpile.inventory.views.item_delete item.id %}" id="delete_item_{{ item.id }}" title="Delete Item" item_id="{{ item.id }}" class="ui-state-default ui-corner-all button open-in-dialog"><span class="ui-icon ui-icon-trash"></span></a>
+									{% endif %}
 								</td>
 								{% endif %}
 					
@@ -67,14 +70,14 @@
 					</table>
 				</div>
 				
-				<div id="top_button"><a href="{% url stockpile.inventory.views.item category.id %}" id="new_item" title="New Item" cat_id="{{ category.id }}" class="ui-state-default ui-corner-all button_text open-in-dialog"><span class="ui-icon ui-icon-newwin"></span>New</a></p></div>
+				<div id="top_button"><a href="{% url stockpile.inventory.views.item_new category.id %}" id="new_item" title="New Item" cat_id="{{ category.id }}" class="ui-state-default ui-corner-all button_text open-in-dialog"><span class="ui-icon ui-icon-newwin"></span>New</a></p></div>
 		
 		
 				
 		{% endblock main_content %}
 		
 		{% block hidden_divs %}
-		<div id="item_dialog" class="dialog" title="Edit Item">
+		<div id="item_dialog" class="dialog">
 		</div>
 		{% endblock hidden_divs %}
 

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+		
+		{% block title %}Stockpile Login{% endblock %}
+		
+		{% block page_javascript %}
+		{% endblock page_javascript %}
+		
+		{% block navigator %}Welcome to Stockpile{% endblock %}
+		
+		{% block main_content %}
+			
+				<div class="ui-widget">
+					<div class="ui-widget">
+						<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;"> 
+							<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+							<strong>Welcome to Stockpile!</strong><br /><br />Please login to continue<br/ ><b>For this demo instance use the username <i>test</i> and password <i>test</i>.</b></p>
+						</div>
+					</div>
+					<br /><br />
+					
+					{% if form.errors %}
+					<p>Your username and password didn't match. Please try again.</p>
+					{% endif %}
+					
+					<form method="post" action=".">
+					<table>
+					<tr><td>{{ form.username.label_tag }}</td><td>{{ form.username }}</td></tr>
+					<tr><td>{{ form.password.label_tag }}</td><td>{{ form.password }}</td></tr>
+					</table>
+
+					<input type="submit" value="login" />
+					<input type="hidden" name="next" value="{{ next }}" />
+					</form>
+				</div>
+				
+				
+				
+	
+		{% endblock main_content %}
+		{% block hidden_divs %}
+		{% endblock hidden_divs %}
+		
+
+
+

@@ -1,6 +1,6 @@
 {% extends ajax|yesno:"base_ajax.html,base.html" %}
 		
-		{% block navigator %}{% ifequal ajax False %}<p><a href="/">Home</a> > Edit {{ category.name }}</p>{% endifequal %}{% endblock %}
+		{% block navigator %}{% ifequal ajax False %}<p><a href="{% url stockpile.inventory.views.index %}">Home</a> &gt Delete {{ category.name }}</p>{% endifequal %}{% endblock %}
 		
 		{% block content %}
 		<table>

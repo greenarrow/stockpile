@@ -1,10 +1,9 @@
 from django.contrib import admin
-from stockpile.inventory.models import Category, Field, Item, Value, FieldType
+import stockpile.inventory.models as models
 
 
-admin.site.register(Category)
-admin.site.register(Field)
-admin.site.register(FieldType)
-admin.site.register(Item)
-admin.site.register(Value)
-#admin.site.register(Catalogue)
+admin.site.register(models.Category)
+admin.site.register(models.Field)
+admin.site.register(models.Item)
+admin.site.register(models.Value)
+#admin.site.register(models.Catalogue)

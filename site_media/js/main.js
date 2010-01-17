@@ -16,6 +16,15 @@ $(function(){
 	$('#header').css( { 'background':$('#header').css('color'), 'color':$('.ui-widget-content').css('background-color') } );
 	
 	
+	$(".show-hide-sidebar-left").click( function(){
+		//alert('dd');
+		$("div#sidebar_left").toggle(300);
+		$("div#show-sidebar-left").toggle(300);
+		$("div#main_body").toggleClass('sidebar_visible', 300);
+		
+	});
+	
+	/*
 	$("div#show-sidebar-left").click( function(){
 		
 		$("div#main_body").addClass('sidebar_visible', 300);
@@ -37,6 +46,7 @@ $(function(){
 		
 		
 	});
+	*/
 	
 	$("div.sidebar-module > .sidebar-header").click( function(){
 		$(this).parent().find(".sidebar-content").toggle('fold', 500);
@@ -58,7 +68,7 @@ $(function(){
 	// Dialog
 	$("div.dialog").dialog({
 		bgiframe: true,
-		resizable: false,
+		//resizable: false,
 		autoOpen: false,
 		width: 400,
 		modal: true,
@@ -88,10 +98,13 @@ $(function(){
 		$('div.dialog').dialog( 'option', 'title', $(this).attr("title") );
 		url = $(this).attr("href");
 		$("div.dialog").load(url + "?ajax=1");
+		//alert( url + "?ajax=1" );
 		$('div.dialog').dialog('open');
 		
 		return false;
 	});
+	
+	
 
 
 	
