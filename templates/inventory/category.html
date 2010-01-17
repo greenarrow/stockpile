@@ -9,9 +9,9 @@
 		{% block navigator %}<a href="{% url stockpile.inventory.views.index %}">Home</a> &gt {{ category.name }}{% endblock %}
 		
 		{% block main_content %}
-		
+				
 				<div id="item_table" class="ui-widget">
-		
+					
 					<table id="items">
 						<thead>
 							<tr class="ui-widget-header">
@@ -26,7 +26,7 @@
 								{% endif %}
 							</tr>
 						</thead>
-			
+						
 						<tbody>
 							{% for item in items %}
 							<tr id="item_{{ item.id }}" class="ui-widget-content">
@@ -34,9 +34,9 @@
 								{% for field, value in item.get_field_values %}
 								<td>{{ value.value }}</td>
 								{% endfor %}
-					
-								<td>{{ item.created }}</td>
-								<td>{{ item.updated }}</td>
+								
+								<td>{{ item.created|date:"Y.m.d H:i:s" }}</td>
+								<td>{{ item.updated|date:"Y.m.d H:i:s" }}</td>
 								
 								{% if perms.inventory.change_item or perms.inventory.delete_item %}
 								<td>
@@ -48,32 +48,18 @@
 									{% endif %}
 								</td>
 								{% endif %}
-					
+								
 							{% endfor %}
 						</tbody>
-						<!--
-						<tfoot>
-							<tr class="ui-widget-header">
-									<th>Code</th>
-									{% for field in category.get_fields %}
-									<th>{{ field.name }}</th>
-									{% endfor %}
-									<th>Created</th>
-									<th>Updated</th>
-									{% if item_edit %}
-									<th> </th>
-									{% endif %}
-							</tr>
-						</tfoot>
-						-->
-				
+						
 					</table>
 				</div>
 				
 				<div id="top_button"><a href="{% url stockpile.inventory.views.item_new category.id %}" id="new_item" title="New Item" cat_id="{{ category.id }}" class="ui-state-default ui-corner-all button_text open-in-dialog"><span class="ui-icon ui-icon-newwin"></span>New</a></p></div>
 		
+		<br />
 		
-				
+		
 		{% endblock main_content %}
 		
 		{% block hidden_divs %}
