@@ -126,6 +126,13 @@ div#navigator {
 	top:75px;
 }
 
+div#user-tools {
+	position:absolute;
+	font-size:85%;
+	right:30px;
+	top:75px;
+}
+
 
 div#sidebar_left {
 	/*display: none;*/
@@ -140,9 +147,9 @@ div#sidebar_left {
 
 
 div#show-sidebar-left {
-	left:0px;
+	left:-1px;
 	top:145px;
-	padding: 100px 0.8em 0.5em 0.8em;
+	padding: 200px 0.4em 0.5em 0.8em;
 	text-decoration: none;
 	position: absolute;
 	display:none;
