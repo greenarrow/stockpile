@@ -37,12 +37,15 @@
 					
 								<td>{{ item.created }}</td>
 								<td>{{ item.updated }}</td>
-					
-								{% if item_edit %}
+								
+								{% if perms.inventory.change_item or perms.inventory.delete_item %}
 								<td>
-					
+									{% if perms.inventory.change_item %}
 									<a href="{% url stockpile.inventory.views.item_edit item.id %}" id="edit_item_{{ item.id }}" title="Edit Item" item_id="{{ item.id }}" class="ui-state-default ui-corner-all button edit_item open-in-dialog"><span class="ui-icon ui-icon-pencil"></span></a>
+									{% endif %}
+									{% if perms.inventory.delete_item %}
 									<a href="{% url stockpile.inventory.views.item_delete item.id %}" id="delete_item_{{ item.id }}" title="Delete Item" item_id="{{ item.id }}" class="ui-state-default ui-corner-all button open-in-dialog"><span class="ui-icon ui-icon-trash"></span></a>
+									{% endif %}
 								</td>
 								{% endif %}
 					

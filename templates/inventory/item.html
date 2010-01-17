@@ -38,7 +38,7 @@
 					{% for field in form %}
 					<tr class="ui-widget-content">
 						<td>{{ field.label_tag }}</td><td>{{ field }}</td>
-						{% if field.field.is_choice %}
+						{% if field.field.is_choice and perms.inventory.add_choice %}
 						<td><a href="{% url stockpile.inventory.views.choice_new field.field.current_field.id %}" id="edit_field_{{ field.id }}" title="Edit Field" item_id="{{ field.id }}" class="ui-state-default ui-corner-all button open-in-dialog"><span class="ui-icon ui-icon-plus"></span></a></a></td>
 						{% else %}
 						<td></td>

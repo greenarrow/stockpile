@@ -1,6 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
-from django.contrib.auth.decorators import permission_required, login_required
+from django.contrib.auth.decorators import permission_required, login_required, user_passes_test
+
 
 # need to find out about this
 from django.template import RequestContext 
@@ -11,7 +12,6 @@ import stockpile.inventory.models as models
 import stockpile.inventory.forms as forms
 
 
-@login_required
 # Get parameters used for all views (data used in base.html e.g. sidebar)
 def get_base_params(request):
 	# see if we have an request for basic html content (for ajax) or the full page
@@ -26,9 +26,11 @@ def get_base_params(request):
 	return { 'ajax':ajax, 'sidebar':{'newest_items':newest_items, 'categories':categories} }
 
 
+
 @login_required
 def index(request):
 	#print request.user.get_all_permissions()
+	
 	categories = models.Category.objects.all()
 	
 	newest_items = models.Item.objects.filter().order_by('-id')[ :5 ]
@@ -52,13 +54,14 @@ def category_view(request, category_id):
 	rows = []
 	
 	params = get_base_params(request)
-	params.update( {'category':cat, 'items':items, 'item_edit':True} )
+	params.update( {'category':cat, 'items':items} )
 	# TODO table vales should be smart depending on fieldtype (e.g. bool should not just show 1/0) should value have a function to format nicely?
 	return render_to_response( 'inventory/category.html', params, context_instance=RequestContext(request) )
 
 
 #TODO new category with option to duplicate
 @login_required
+@user_passes_test( lambda u: u.has_perm('inventory.change_category') )
 def category_edit(request, category_id):
 	if request.method == "POST":
 		if category_id == '0':
@@ -89,7 +92,7 @@ def category_edit(request, category_id):
 			cat = models.Category.objects.get(id=category_id)
 		
 		
-		form = forms.models.CategoryEditForm(instance=cat)
+		form = forms.CategoryEditForm(instance=cat)
 		form.set_category(cat.id)
 		
 		params = get_base_params(request)
@@ -99,25 +102,29 @@ def category_edit(request, category_id):
 
 
 @login_required
+@user_passes_test( lambda u: u.has_perm('inventory.delete_category') )
 def category_delete(request, category_id):
 	
 	cat = models.Category.objects.get(id=category_id)
 	
 	params = get_base_params(request)
 	params.update( {'category':cat} )
-	
+	# TODO
 	return render_to_response( 'inventory/category_delete.html', params, context_instance=RequestContext(request) )
 
 
 
 
 @login_required
+@user_passes_test( lambda u: u.has_perm('inventory.add_item') )
 def item_new(request, category_id):
 	return item_edit(request, item_id='new', category_id=category_id)
 
 @login_required
+@user_passes_test( lambda u: u.has_perm('inventory.change_item') )
 def item_edit(request, item_id, category_id=None):
-	
+	print request.user.get_all_permissions()
+	print request.user.has_perm('inventory.change_item')
 	if request.method == "POST":
 		if item_id == 'new':
 			cat = models.Category.objects.get(id=category_id)
@@ -152,6 +159,7 @@ def item_edit(request, item_id, category_id=None):
 
 
 @login_required
+@user_passes_test( lambda u: u.has_perm('inventory.delete_item') )
 def item_delete(request, item_id):
 	params = get_base_params(request)
 	params.update( {'item':item, 'form':form} )
@@ -171,6 +179,7 @@ def choice(request, value):
 
 
 @login_required
+@user_passes_test( lambda u: u.has_perm('inventory.add_choice') )
 def choice_new(request, field_id):
 	field = models.Field.objects.get(id=field_id)
 	value = models.Value(field=field)
@@ -179,12 +188,14 @@ def choice_new(request, field_id):
 
 
 @login_required
+@user_passes_test( lambda u: u.has_perm('inventory.change_choice') )
 def choice_edit(request, item_id):
 	value = models.Value.objects.get(item_id)
 	return choice(request, value)
 
 
 @login_required
+@user_passes_test( lambda u: u.has_perm('inventory.change_field') )
 def field(request, field_id):
 	
 	if request.method == "POST":
