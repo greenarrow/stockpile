@@ -28,7 +28,6 @@ stockpile_patterns = patterns('stockpile.inventory.views',
 	(r'^field:(\d+)$', 'field'),
 	#(r'^field:(new)$', 'field'),
 	
-	(r'^sidebar', 'sidebar'),
 	
 	(r'^choice:new:(\d+)$', 'choice_new'),
 	(r'^choice:(\d+)$', 'choice_edit'),

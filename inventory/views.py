@@ -220,14 +220,6 @@ def field(request, field_id):
 		return render_to_response( 'inventory/field.html', params, context_instance=RequestContext(request) )
 
 
-
-
-
-# TODO resolve this - I don't know why the hell DJango wants to call an object in this module called sidebar, but we will let it
-def sidebar():
-	return None
-
-
 @login_required
 def user_logout(request):
 	logout(request)
