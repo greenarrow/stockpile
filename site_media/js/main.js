@@ -6,24 +6,26 @@ $(function(){
 		function() { $(this).removeClass('ui-state-hover'); }
 	);
 	
+	
 	//hover states on the static widgets
 	$('a').hover(
 		function() { $(this).addClass('link_hover'); }, 
 		function() { $(this).removeClass('link_hover'); }
 	);
 	
+	
 	// Invert the header colors - TODO get this abomination out of here
 	$('#header').css( { 'background':$('#header').css('color'), 'color':$('.ui-widget-content').css('background-color') } );
 	
 	
+	// when either of the show / hide sidebar buttons are clicked, toggle the state
 	$(".show-hide-sidebar-left").click( function(){
-		//alert('dd');
 		$("div#sidebar_left").toggle(300);
 		$("div#show-sidebar-left").toggle(300);
 		$("div#main_body").toggleClass('sidebar_visible', 300);
-		
 	});
 	
+	// Fancier show / hide for sidebar (animation queue)
 	/*
 	$("div#show-sidebar-left").click( function(){
 		
@@ -48,10 +50,13 @@ $(function(){
 	});
 	*/
 	
+	
+	// show/hide sidebar modules by clicking on title
 	$("div.sidebar-module > .sidebar-header").click( function(){
 		$(this).parent().find(".sidebar-content").toggle('fold', 500);
 	});
 	
+	// Hover for sidebar headers
 	$('.sidebar-header').hover(
 		function() { $(this).addClass('ui-state-hover'); }, 
 		function() { $(this).removeClass('ui-state-hover'); }
@@ -59,13 +64,7 @@ $(function(){
 	);
 	
 	
-	var name = $("#name"),
-		email = $("#email"),
-		password = $("#password"),
-		allFields = $([]).add(name).add(email).add(password),
-		tips = $("#validateTips");
-
-	// Dialog
+	// Popup dialog
 	$("div.dialog").dialog({
 		bgiframe: true,
 		//resizable: false,
@@ -98,22 +97,18 @@ $(function(){
 		}
 	});
 	
+	
+	// Open a link in a dialog instead of following it
 	$("a.open-in-dialog").click(function(){
 		// clear first so we don't see old data
 		$('div.dialog').html("");
 		$('div.dialog').dialog( 'option', 'title', $(this).attr("title") );
 		url = $(this).attr("href");
 		$("div.dialog").load(url + "?ajax=1");
-		//alert( url + "?ajax=1" );
 		$('div.dialog').dialog('open');
 		
 		return false;
 	});
-	
-	
-
-
-	
 
 });
 
