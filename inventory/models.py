@@ -78,7 +78,10 @@ class Item(models.Model):
 	history = models.TextField(blank=True)
 	
 	def get_code(self):
-		return u'%s%s' % ( self.category.code, str(self.id).zfill(4) )
+		if self.id == None:
+			return u"-"
+		else:
+			return u'%s%s' % ( self.category.code, str(self.id).zfill(4) )
 	
 	def get_field_values(self, null_values=False):
 		fields = self.category.fields.all()

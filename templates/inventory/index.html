@@ -27,7 +27,7 @@
 					
 							{% for len, cat in categories %}
 							<tr class="ui-widget-content">
-								<td><h3><a href="{% url stockpile.inventory.views.category cat.id %}">{{ cat.name }}</h3></td>
+								<td><h3><a href="{% url stockpile.inventory.views.category_view cat.id %}">{{ cat.name }}</h3></td>
 								<td><h4>{{ len }}</h4></td>
 								{% if category_admin %}
 								<td>

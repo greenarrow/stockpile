@@ -1,6 +1,6 @@
 {% extends ajax|yesno:"base_ajax.html,base.html" %}
 	
-	{% block navigator %}{% if ajax %}{% else %}<a href="/">Home</a> > <a href='/category:{{ item.category.id }}'>{{ item.category.name }}</a> > {{ item.get_code }}{% endif %}{% endblock %}
+	{% block navigator %}{% if ajax %}{% else %}<a href="{% url stockpile.inventory.views.index %}">Home</a> > <a href='{% url stockpile.inventory.views.category_view item.category.id %}'>{{ item.category.name }}</a> > {{ item.get_code }}{% endif %}{% endblock %}
 	
 	{% block page_javascript %}
 	{% if ajax %}
@@ -19,7 +19,7 @@
 	
 	{% block main_content %}
 	
-	<form id="item-form" method="POST" action="{% url stockpile.inventory.views.item item.id %}">
+	<form id="item-form" method="POST" action="">
 		<fieldset>
 			<table>
 				<thead>

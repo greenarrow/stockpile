@@ -22,13 +22,13 @@ def get_base_params(request):
 	categories.sort()
 	categories.reverse()
 	newest_items = models.Item.objects.filter().order_by('-id')[ :5 ]
-	
+	print categories
 	return { 'ajax':ajax, 'sidebar':{'newest_items':newest_items, 'categories':categories} }
 
 
 @login_required
 def index(request):
-	print request.user.get_all_permissions()
+	#print request.user.get_all_permissions()
 	categories = models.Category.objects.all()
 	
 	newest_items = models.Item.objects.filter().order_by('-id')[ :5 ]
@@ -46,7 +46,7 @@ def index(request):
 	return render_to_response( 'inventory/index.html', params, context_instance=RequestContext(request) )
 
 @login_required
-def category(request, category_id):
+def category_view(request, category_id):
 	cat = models.Category.objects.get(id=category_id)
 	items = models.Item.objects.filter(category=cat)
 	rows = []
@@ -109,43 +109,45 @@ def category_delete(request, category_id):
 	return render_to_response( 'inventory/category_delete.html', params, context_instance=RequestContext(request) )
 
 
+
+
 @login_required
-def item(request, item_id, category_id=None):
+def item_new(request, category_id):
+	return item_edit(request, item_id='new', category_id=category_id)
+
+@login_required
+def item_edit(request, item_id, category_id=None):
 	
 	if request.method == "POST":
-		if item_id == '0':
-			
+		if item_id == 'new':
 			cat = models.Category.objects.get(id=category_id)
 			item = models.Item(category=cat)
 		else:
 			item = models.Item.objects.get(id=item_id)
-		#
-		#
-		#
-		print request.POST, item
+			cat = item.category
+		
 		form = forms.ItemForm(request.POST, instance=item)
 		
 		if form.is_valid():
 			form.save()
-			return HttpResponse("ok")
+			# TODO need to review this once ajax submit complete
+			return HttpResponseRedirect( reverse( 'stockpile.inventory.views.category_view', args=[cat.id] ) )
 		else:
+			# TODO display for with errors
 			return HttpResponse(form.errors)
 		
 	else:
-		if item_id == '0':
+		if item_id == 'new':
 			cat = models.Category.objects.get(id=category_id)
 			item = models.Item(category=cat)
 			form = forms.ItemForm(instance=item)
 		else:
 			item = models.Item.objects.get(id=item_id)
-			#print "## item:", item
+			cat = item.category
 			form = forms.ItemForm(instance=item)
 		
-		
 		params = get_base_params(request)
-		# TODO reply is bad, remove this!
-		params.update( {'item':item, 'form':form, 'reply':'/item:%s' % item.id} )
-		#print [ dir(fields.field) for fields in form ]
+		params.update( {'item':item, 'category':cat, 'form':form} )
 		return render_to_response( 'inventory/item.html', params, context_instance=RequestContext(request) )
 
 

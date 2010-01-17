@@ -10,27 +10,19 @@ admin.autodiscover()
 generic_patterns = patterns( '', (r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}), )
 
 stockpile_patterns = patterns('stockpile.inventory.views',
-	(r'^category:(\d+)', 'category'),
+	(r'^category:(\d+)/view', 'category_view'),
+	(r'^category:(\d+)/edit$', 'category_edit'),
+	(r'^category:(\d+)/delete', 'category_delete'),
 	
-	(r'^edit_category:(\d+)$', 'category_edit'),
-	#(r'^edit_category:(new)$', 'category_edit'),
+	(r'^item:(\d+)/edit$', 'item_edit'),
+	(r'^item/new:(\d+)$', 'item_new'),
+	(r'^item:(\d+)/delete$', 'item_delete'),
 	
-	
-	(r'^delete_category:(\d+)', 'category_delete'),
-	
-	(r'^item:(\d+)$', 'item'),
-	#(r'^item:0:(\d+)$', 'item'),
-	
-	(r'^delete_item:(\d+)$', 'item_delete'),
-	
-	#(r'^item:(?P<item_id>[0-9|new]+):?(?P<category_id>\d*)', 'item'),
 	
 	(r'^field:(\d+)$', 'field'),
-	#(r'^field:(new)$', 'field'),
 	
-	
-	(r'^choice:new:(\d+)$', 'choice_new'),
-	(r'^choice:(\d+)$', 'choice_edit'),
+	(r'^choice/new:(\d+)$', 'choice_new'),
+	(r'^choice:(\d+)/edit$', 'choice_edit'),
 	
 	(r'^logout/$', 'user_logout'),
 	
