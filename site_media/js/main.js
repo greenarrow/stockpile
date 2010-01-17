@@ -78,6 +78,12 @@ $(function(){
 				var bValid = true;
 				//allFields.removeClass('ui-state-error');
 				
+				// submit the form contained in dialog div
+				$("div.dialog form").ajaxSubmit(); 
+				
+				// TODO - full page reload is a workarround until ajax work is extended to make only the affected content be reloaded
+				location.reload(true);
+				
 				$(this).dialog('close');
 					
 			},
