@@ -13,10 +13,12 @@
 					<div class="ui-widget">
 						<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;"> 
 							<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-							<strong>Welcome to Stockpile!</strong><br /><br />Please login to continue<br/ ><b>For this demo instance use the username <i>test</i> and password <i>test</i>.</b></p>
+							<strong>Welcome to Stockpile!</strong><br /><br />Please login to continue
+							</p>
+							
 						</div>
 					</div>
-					<br /><br />
+					<br />
 					
 					{% if form.errors %}
 					<p>Your username and password didn't match. Please try again.</p>
@@ -31,6 +33,16 @@
 					<input type="submit" value="login" />
 					<input type="hidden" name="next" value="{{ next }}" />
 					</form>
+					
+					<br />
+					<div class="ui-widget">
+						<table class="ui-widget-content" width="0%">
+							<th class="ui-widget-header"><strong>Demo Login Details</strong><br /></td>
+							<tr><td><strong>Normal User</strong><br />Username: <i>test</i><br />Password: <i>test</i><br /></td></tr>
+							<tr><td><strong>Read Only</strong><br />Username: <i>readonly</i><br />Password: <i>test</i></td></tr>
+						</table>
+					</div>
+					
 				</div>
 				
 				
