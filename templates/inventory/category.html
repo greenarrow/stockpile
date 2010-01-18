@@ -56,6 +56,7 @@
 				</div>
 				
 				{% if perms.inventory.add_item %}
+				<br /><br /><br />
 				<div id="top_button"><a href="{% url stockpile.inventory.views.item_new category.id %}" id="new_item" title="New Item" cat_id="{{ category.id }}" class="ui-state-default ui-corner-all button_text open-in-dialog"><span class="ui-icon ui-icon-newwin"></span>New</a></p></div>
 				{% endif %}
 		<br />
