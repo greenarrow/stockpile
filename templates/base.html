@@ -53,7 +53,7 @@
 		<div id="user-tools" class="ui-widget"><p>{% if user.is_authenticated %}<b>{{ user.username }}</b>. <a href="{% url stockpile.inventory.views.user_logout %}">logout</a>{% endif %}</p></div>
 		
 		<div id="main_block">
-			<div id="main_body"{% if not sidebar_hidden %} class="sidebar_visible"{% endif %}>
+			<div id="main_body"{% if not sidebar_visible %} class="sidebar_visible"{% endif %}>
 				{% block main_content %}
 				<p>no content has been specified</p>
 				{% endblock main_content %}
@@ -61,7 +61,7 @@
 		
 		
 			
-			<div id="sidebar_left" class="ui-widget ui-corner-all ui-widget-content"{% if not sidebar_hidden %} style="display:none"{% endif %}>
+			<div id="sidebar_left" class="ui-widget ui-corner-all ui-widget-content"{% if not sidebar_visible %} style="display:none"{% endif %}>
 			{% block sidebar_left %}
 				
 				<div id="hide-sidebar-left">
@@ -98,7 +98,7 @@
 			</div>
 			
 		
-			<div id="show-sidebar-left" class="show-hide-sidebar-left ui-widget ui-corner-br ui-corner-tr ui-widget-content ui-state-default button"{% if sidebar_hidden %} style="display:none"{% endif %}>
+			<div id="show-sidebar-left" class="show-hide-sidebar-left ui-widget ui-corner-br ui-corner-tr ui-widget-content ui-state-default button"{% if sidebar_visible %} style="display:none"{% endif %}>
 			{% block show-sidebar-left %}
 				<span class="ui-icon ui-icon-triangle-1-e"></span>
 			{% endblock show-sidebar-left %}
