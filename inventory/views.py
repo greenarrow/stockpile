@@ -22,10 +22,14 @@ def get_base_params(request):
 	categories.sort()
 	categories.reverse()
 	newest_items = models.Item.objects.filter().order_by('-id')[ :5 ]
-	#print categories
-	sidebar_hidden = request.session.get('sidebar_hidden', False)
 	
-	return { 'ajax':ajax, 'sidebar_hidden':sidebar_hidden, 'sidebar':{'newest_items':newest_items, 'categories':categories} }
+	# If sidebar position is not set then default to visible
+	if not 'sidebar_visible' in request.session.keys():
+		request.session['sidebar_visible'] = True
+	
+	sidebar_visible = request.session.get('sidebar_visible', False)
+	
+	return { 'ajax':ajax, 'sidebar_visible':sidebar_visible, 'sidebar':{'newest_items':newest_items, 'categories':categories} }
 
 
 
@@ -240,8 +244,8 @@ def field(request, field_id):
 
 
 def toggle_sidebar(request):
-	request.session['sidebar_hidden'] = not request.session.get('sidebar_hidden', False)
-	#print request.session.get('sidebar_hidden', False)
+	request.session['sidebar_visible'] = not request.session.get('sidebar_visible', False)
+	#print request.session.get('sidebar_visible', False)
 	return HttpResponse("ok")
 
 @login_required
