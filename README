@@ -1,0 +1,20 @@
+Simple web based inventory system
+
+Stockpile is a simple lightweight web based inventory system that can be used to keep track of many different types of items. It uses a modern ajax user interface but can will also work in entirety without javascript present.
+
+Stockpile is not ready for production use.
+
+Check out the demo here: http://www.greenarrow.devisland.net/stockpile
+
+Todo List
+    * Mobile browser support
+    * Complete item deletion, choice editing and category editing
+    * Other noted bug fixes
+    * Downloadable bundle
+
+Acknowledgements
+http://jquery.com/
+http://jqueryui.com/
+http://datatables.net/index
+http://jquery.malsup.com/form/
+
